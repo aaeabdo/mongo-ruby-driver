@@ -145,7 +145,7 @@ module Mongo
     #
     # @since 2.0.0
     def socket(timeout, ssl_options = {})
-      @resolver ||= initialize_resolver!(timeout, ssl_options)
+      @resolver = initialize_resolver!(timeout, ssl_options)
       @resolver.socket(timeout, ssl_options)
     end
 
