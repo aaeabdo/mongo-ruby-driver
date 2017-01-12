@@ -58,8 +58,12 @@ module Mongo
       #
       # @since 2.0.0
       def connect!
-        unless socket && socket.connectable?
-          @socket = address.socket(timeout, ssl_options)
+        new_socket = address.socket(timeout, ssl_options)
+        new_host = new_socket.host
+        old_host = socket.try(:host)
+
+        if !(socket && socket.connectable?) || (new_host != old_host)
+          @socket = new_socket
           socket.connect!
           handshake!
           authenticate!
